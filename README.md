@@ -149,22 +149,80 @@ After running the update script, verify that:
 * Date keys remain consistent with the updated dates.
 * Foreign key constraints have been restored successfully.
 
+## Data Preparation
+
+### Fact Table vs Dimension Table
+
+Before preparing the data for analysis, the AdventureWorks data warehouse schema is reviewed to distinguish between fact tables and dimension tables.
+
+**Fact tables** contain measurable business events and numerical values used for analysis, while **dimension tables** provide descriptive attributes used to categorize and filter those facts.
+
+The analysis will primarily focus on the internet sales fact table and the related dimensions required to answer the business questions.
+
+### Identify Necessary Tables
+
+The required tables will be identified based on the business request and user stories.
+
+The analysis will require data related to:
+
+* Internet sales
+* Dates and time periods
+* Products
+* Customers
+* Sales representatives
+* Budget data
+
+Only the tables and fields necessary to answer the defined business questions will be prepared for the analytical model.
+
+### Data Cleansing & Transformation
+
+Data cleansing and transformation is being performed before the data is used for analysis and Power BI.
+
+The first completed step is the cleansing and preparation of the `DimDate` table.
+
+#### DIM_Calendar Transformation
+
+The original `DimDate` table contains a number of fields that are not required for the current analysis. A SQL query was used to select the relevant date attributes and rename several fields for easier use in the analytical model.
+
+The transformation includes:
+
+* Selecting `DateKey`
+* Renaming `FullDateAlternateKey` to `Date`
+* Using the English day name as `Day`
+* Selecting `WeekNumberOfYear` as `WeekNr`
+* Selecting `EnglishMonthName` as `Month`
+* Creating a three-character `MonthShort` field
+* Selecting `MonthNumberOfYear` as `MonthNo`
+* Selecting `CalendarQuarter` as `Quarter`
+* Selecting `CalendarYear` as `Year`
+* Excluding unused day, language, semester, and fiscal fields
+
+The transformed data was exported from SQL Server as:
+
+```text
+CSV/DIM_Calendar.csv
+```
+
+This represents the first completed step of the data cleansing and transformation process. Additional fact and dimension tables will be prepared in subsequent stages.
+
 ## Project Workflow
 
 1. Set up the AdventureWorksDW2022 database in SQL Server
 2. Update the database dates to more recent years
 3. Review the business request and define analytical requirements
-4. Explore and understand the data warehouse schema
+4. Understand fact tables and dimension tables
 5. Identify the tables and fields required to answer the business questions
-6. Query and analyze internet sales data using SQL
-7. Prepare the required data for Power BI
-8. Import/connect the data to Power BI
-9. Build the Power BI data model and relationships
-10. Create DAX measures and calculated columns
-11. Incorporate the 2021 budget data
-12. Develop interactive dashboards and visualizations
-13. Validate the dashboard against the business requirements
-14. Extract and document key business insights
+6. Cleanse and transform the required data
+7. Export prepared datasets where required
+8. Query and analyze internet sales data using SQL
+9. Prepare the required data for Power BI
+10. Import/connect the data to Power BI
+11. Build the Power BI data model and relationships
+12. Create DAX measures and calculated columns
+13. Incorporate the 2021 budget data
+14. Develop interactive dashboards and visualizations
+15. Validate the dashboard against the business requirements
+16. Extract and document key business insights
 
 ## Analysis
 
@@ -227,6 +285,9 @@ Sales-Business-Analytics/
 │
 ├── Images/
 │   └── dashboard-preview.png
+│
+├── CSV/
+│   └── DIM_Calendar.csv
 │
 └── README.md
 ```
