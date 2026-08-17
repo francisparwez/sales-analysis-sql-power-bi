@@ -135,7 +135,7 @@ The script:
 * Updates the associated `DateKey` values.
 * Updates year-based fields such as `CalendarYear`, `FirstOrderYear`, `LastOrderYear`, and `YearOpened`.
 * Temporarily removes relevant foreign key constraints while the date updates are performed.
-* Recreates the foreign key constraints after the updates are complete.
+* Recreates the foreign key constraints after the date updates are complete.
 
 Run the date-update SQL script against the `AdventureWorksDW2022` database in SSMS.
 
@@ -157,13 +157,13 @@ Before preparing the data for analysis, the AdventureWorks data warehouse schema
 
 **Fact tables** contain measurable business events and numerical values used for analysis, while **dimension tables** provide descriptive attributes used to categorize and filter those facts.
 
-The analysis will primarily focus on the internet sales fact table and the related dimensions required to answer the business questions.
+The analysis primarily focuses on the `FactInternetSales` fact table and the related dimensions required to answer the business questions.
 
 ### Identify Necessary Tables
 
-The required tables will be identified based on the business request and user stories.
+The required tables were identified based on the business request and user stories.
 
-The analysis will require data related to:
+The analytical dataset requires data related to:
 
 * Internet sales
 * Dates and time periods
@@ -172,38 +172,140 @@ The analysis will require data related to:
 * Sales representatives
 * Budget data
 
-Only the tables and fields necessary to answer the defined business questions will be prepared for the analytical model.
+The following AdventureWorks tables were prepared for the initial analytical dataset:
 
-### Data Cleansing & Transformation
+* `DimDate`
+* `DimCustomer`
+* `DimProduct`
+* `FactInternetSales`
 
-Data cleansing and transformation is being performed before the data is used for analysis and Power BI.
+Additional supporting tables such as geography, product subcategory, and product category were used during transformation to enrich the prepared dimension tables.
 
-The first completed step is the cleansing and preparation of the `DimDate` table.
+## Data Cleansing & Transformation
 
-#### DIM_Calendar Transformation
+The data cleansing and transformation stage prepares the source data for analysis and Power BI by selecting only relevant fields, creating useful calculated attributes, renaming columns, joining related dimension information, handling missing values, and limiting the sales dataset to the required analytical period.
 
-The original `DimDate` table contains a number of fields that are not required for the current analysis. A SQL query was used to select the relevant date attributes and rename several fields for easier use in the analytical model.
+### 1. DIM_Calendar Transformation
 
-The transformation includes:
+The original `DimDate` table contains a number of fields that are not required for the current analysis. A SQL query was used to select the relevant calendar attributes and rename several fields for easier use in the analytical model.
 
-* Selecting `DateKey`
-* Renaming `FullDateAlternateKey` to `Date`
-* Using the English day name as `Day`
-* Selecting `WeekNumberOfYear` as `WeekNr`
-* Selecting `EnglishMonthName` as `Month`
-* Creating a three-character `MonthShort` field
-* Selecting `MonthNumberOfYear` as `MonthNo`
-* Selecting `CalendarQuarter` as `Quarter`
-* Selecting `CalendarYear` as `Year`
-* Excluding unused day, language, semester, and fiscal fields
+The transformation:
 
-The transformed data was exported from SQL Server as:
+* Keeps `DateKey` as the date dimension key.
+* Renames `FullDateAlternateKey` to `Date`.
+* Uses the English day name as `Day`.
+* Renames `WeekNumberOfYear` to `WeekNr`.
+* Uses `EnglishMonthName` as `Month`.
+* Creates `MonthShort` using the first three characters of the month name.
+* Renames `MonthNumberOfYear` to `MonthNo`.
+* Renames `CalendarQuarter` to `Quarter`.
+* Renames `CalendarYear` to `Year`.
+* Excludes unused day, language, semester, and fiscal fields.
+
+The prepared calendar data was exported as:
 
 ```text
 CSV/DIM_Calendar.csv
 ```
 
-This represents the first completed step of the data cleansing and transformation process. Additional fact and dimension tables will be prepared in subsequent stages.
+### 2. DIM_Customers Transformation
+
+The `DimCustomer` table was reduced to the customer attributes required for analysis.
+
+The transformation:
+
+* Keeps `CustomerKey` as the customer identifier.
+* Renames `FirstName` to `First Name`.
+* Renames `LastName` to `Last Name`.
+* Creates a new `Full Name` field by combining first and last names.
+* Converts the source gender codes (`M` and `F`) into readable values (`Male` and `Female`).
+* Keeps `DateFirstPurchase` for customer purchase analysis.
+* Joins `DimGeography` using `GeographyKey` to add the customer's city.
+* Renames the resulting city field to `Customer City`.
+* Excludes customer attributes that are not required for the current analysis.
+
+This creates a cleaner customer dimension that is easier to use for filtering and reporting in Power BI.
+
+The prepared customer data was exported as:
+
+```text
+CSV/DIM_Customers.csv
+```
+
+### 3. DIM_Products Transformation
+
+The `DimProduct` table was transformed to provide the product information required for product-level sales analysis.
+
+The transformation:
+
+* Keeps `ProductKey` as the product identifier.
+* Renames `ProductAlternateKey` to `ProductItemCode`.
+* Renames `EnglishProductName` to `Product Name`.
+* Joins `DimProductSubcategory` to obtain the product subcategory.
+* Joins `DimProductCategory` to obtain the product category.
+* Renames these fields to `Sub Category` and `Product Category`.
+* Renames `Color` to `Product Color`.
+* Renames `Size` to `Product Size`.
+* Keeps `ProductLine`.
+* Renames `ModelName` to `Product Model Name`.
+* Keeps `EnglishDescription` as `Product Description`.
+* Uses `ISNULL()` to replace missing product status values with `Outdated`.
+
+The joins enrich the product dimension by bringing category and subcategory information into the prepared product dataset rather than requiring those fields to be handled separately later.
+
+The prepared product data was exported as:
+
+```text
+CSV/DIM_Products.csv
+```
+
+### 4. FACT_InternetSales Transformation
+
+The `FactInternetSales` table contains the measurable sales transactions used as the primary fact table for the analysis.
+
+The transformation selects the fields required to connect sales transactions to the relevant dimensions and analyze sales performance.
+
+The selected fields include:
+
+* `ProductKey`
+* `OrderDateKey`
+* `DueDateKey`
+* `ShipDateKey`
+* `CustomerKey`
+* `SalesOrderNumber`
+* `SalesAmount`
+
+Several fields available in the original fact table were excluded because they are not required for the current business analysis.
+
+A date filter was also applied:
+
+```sql
+WHERE LEFT(OrderDateKey, 4) >= YEAR(GETDATE()) - 2
+```
+
+This dynamically limits the extracted internet sales data to the current year and the previous two years based on the year contained in `OrderDateKey`.
+
+The result is a focused sales fact dataset containing the fields required for customer, product, and time-based analysis while reducing unnecessary data for downstream processing.
+
+The prepared internet sales data was exported as:
+
+```text
+CSV/FACT_InternetSales.csv
+```
+
+### Data Preparation Output
+
+The completed cleansing and transformation stage produced four prepared datasets:
+
+```text
+CSV/
+├── DIM_Calendar.csv
+├── DIM_Customers.csv
+├── DIM_Products.csv
+└── FACT_InternetSales.csv
+```
+
+These datasets will be used as the prepared input for the subsequent Power BI data modelling and analysis stage.
 
 ## Project Workflow
 
@@ -213,10 +315,10 @@ This represents the first completed step of the data cleansing and transformatio
 4. Understand fact tables and dimension tables
 5. Identify the tables and fields required to answer the business questions
 6. Cleanse and transform the required data
-7. Export prepared datasets where required
+7. Export prepared datasets
 8. Query and analyze internet sales data using SQL
 9. Prepare the required data for Power BI
-10. Import/connect the data to Power BI
+10. Import/connect the prepared datasets to Power BI
 11. Build the Power BI data model and relationships
 12. Create DAX measures and calculated columns
 13. Incorporate the 2021 budget data
@@ -287,7 +389,10 @@ Sales-Business-Analytics/
 │   └── dashboard-preview.png
 │
 ├── CSV/
-│   └── DIM_Calendar.csv
+│   ├── DIM_Calendar.csv
+│   ├── DIM_Customers.csv
+│   ├── DIM_Products.csv
+│   └── FACT_InternetSales.csv
 │
 └── README.md
 ```
