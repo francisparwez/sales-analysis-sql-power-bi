@@ -40,7 +40,6 @@ SELECT
     -- c.GeographyKey,
     -- c.CustomerAlternateKey,
     -- c.Title,
-
     c.FirstName AS [First Name],
     -- c.MiddleName,
     c.LastName AS [Last Name],

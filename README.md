@@ -307,6 +307,22 @@ CSV/
 
 These datasets will be used as the prepared input for the subsequent Power BI data modelling and analysis stage.
 
+## Power BI Data Model
+
+The prepared datasets were then loaded into Power BI to begin the data modelling stage.
+
+### 1. Load Prepared Data
+
+The four prepared CSV datasets generated during the data cleansing and transformation stage were imported into Power BI:
+
+```text
+CSV/
+├── DIM_Calendar.csv
+├── DIM_Customers.csv
+├── DIM_Products.csv
+└── FACT_InternetSales.csv
+```
+
 ## Project Workflow
 
 1. Set up the AdventureWorksDW2022 database in SQL Server
@@ -342,17 +358,34 @@ The dashboard will allow users to filter and explore sales performance by releva
 
 ## Dashboard
 
-The Power BI dashboard will provide an interactive view of internet sales performance, including:
+The Power BI dashboard will be developed after the data model has been completed.
 
-* Sales KPIs
-* Sales trends over time
-* Product performance
-* Customer performance
-* Sales representative performance
-* Actual sales vs 2021 budget
-* Interactive filters and slicers
+### Dashboard Development Agenda
 
-Power BI dashboard screenshots will be added here.
+The dashboard development process will include:
+
+1. **Load Data & Create Data Model**
+   - Import prepared datasets
+   - Organize dimension and fact tables
+   - Create relationships
+
+2. **Dashboard Design Process**
+   - Create DAX measures
+   - Develop KPIs
+   - Build sales trend visualizations
+   - Analyze product and customer performance
+   - Add filters and slicers
+   - Compare actual sales against budget
+
+3. **Publish & Share Report**
+   - Publish the Power BI report
+   - Configure report sharing
+   - Validate the published dashboard
+
+4. **Wrap Up & Ending**
+   - Review business requirements
+   - Document insights
+   - Add final dashboard screenshots
 
 ## SQL Analysis
 
@@ -376,17 +409,15 @@ Insights will focus on areas such as:
 ## Project Structure
 
 ```text
-Sales-Business-Analytics/
+Sales-Analysis/
 │
 ├── SQL/
-│   ├── UpdateAdventureWorksDates.sql
-│   └── Analysis.sql
+│   ├── AdventureWorksDW-update-query.sql
+│   └── analysis-queries.sql
 │
-├── PowerBI/
-│   └── AdventureWorks_Analytics.pbix
+├── DASHBOARD/
+│   └── sales-analysis.pbix
 │
-├── Images/
-│   └── dashboard-preview.png
 │
 ├── CSV/
 │   ├── DIM_Calendar.csv
