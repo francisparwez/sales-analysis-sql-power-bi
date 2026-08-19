@@ -17,11 +17,11 @@ The primary business requirements are to provide a clear overview of:
 * Which customers are purchasing the most
 * How sales performance has changed over time
 * Sales performance by sales representative
-* Sales performance compared against the 2021 budget
+* Sales performance compared against the provided budget
 
-The business normally analyzes sales performance by looking approximately two years back in time. The 2021 budget was provided separately in an Excel spreadsheet to enable comparison between actual sales performance and budgeted performance.
+The business normally analyzes sales performance by looking approximately two years back in time. A sales budget was provided separately in an Excel spreadsheet to enable comparison between actual sales performance and budgeted performance.
 
-The requested solution is an interactive Power BI dashboard that allows users to explore these areas through visualizations, KPIs, and filters.
+The requested solution is an interactive Power BI dashboard that allows users to explore these areas through visualizations, KPIs, filters, and slicers.
 
 ## Business Demands & User Stories
 
@@ -32,7 +32,7 @@ The requested solution is an interactive Power BI dashboard that allows users to
 | **Reporter**                   | Steven – Sales Manager                         |
 | **Value of Change**            | Visual dashboards and improved sales reporting |
 | **Necessary Systems**          | Power BI, CRM System                           |
-| **Other Relevant Information** | 2021 sales budget provided in Excel            |
+| **Other Relevant Information** | Sales budget provided in Excel                 |
 
 ### User Stories
 
@@ -72,7 +72,7 @@ The requested solution is an interactive Power BI dashboard that allows users to
 
 * Power BI dashboard provides sales trends over time
 * Dashboard includes graphs and KPIs
-* Actual sales can be compared against the 2021 budget
+* Actual sales can be compared against the budget
 
 ## Tools & Technologies
 
@@ -172,7 +172,7 @@ The analytical dataset requires data related to:
 * Sales representatives
 * Budget data
 
-The following AdventureWorks tables were prepared for the initial analytical dataset:
+The following AdventureWorks tables were prepared for the analytical dataset:
 
 * `DimDate`
 * `DimCustomer`
@@ -251,8 +251,6 @@ The transformation:
 * Keeps `EnglishDescription` as `Product Description`.
 * Uses `ISNULL()` to replace missing product status values with `Outdated`.
 
-The joins enrich the product dimension by bringing category and subcategory information into the prepared product dataset rather than requiring those fields to be handled separately later.
-
 The prepared product data was exported as:
 
 ```text
@@ -275,17 +273,13 @@ The selected fields include:
 * `SalesOrderNumber`
 * `SalesAmount`
 
-Several fields available in the original fact table were excluded because they are not required for the current business analysis.
-
-A date filter was also applied:
+A dynamic date filter was applied:
 
 ```sql
 WHERE LEFT(OrderDateKey, 4) >= YEAR(GETDATE()) - 2
 ```
 
-This dynamically limits the extracted internet sales data to the current year and the previous two years based on the year contained in `OrderDateKey`.
-
-The result is a focused sales fact dataset containing the fields required for customer, product, and time-based analysis while reducing unnecessary data for downstream processing.
+This limits the extracted internet sales data to the current year and the previous two years based on the year contained in `OrderDateKey`.
 
 The prepared internet sales data was exported as:
 
@@ -305,15 +299,15 @@ CSV/
 └── FACT_InternetSales.csv
 ```
 
-These datasets will be used as the prepared input for the subsequent Power BI data modelling and analysis stage.
+These datasets were then used as the source data for the Power BI modelling stage.
 
 ## Power BI Data Model
 
-The prepared datasets were then loaded into Power BI to begin the data modelling stage.
+The prepared CSV datasets were loaded into Power BI to begin the data modelling and reporting stage.
 
-### 1. Load Prepared Data
+### 1. Load Prepared Datasets
 
-The four prepared CSV datasets generated during the data cleansing and transformation stage were imported into Power BI:
+The prepared datasets were imported into Power BI:
 
 ```text
 CSV/
@@ -322,6 +316,102 @@ CSV/
 ├── DIM_Products.csv
 └── FACT_InternetSales.csv
 ```
+
+The dimension and fact tables were organized within the Power BI model to support analysis of internet sales by time, customer, and product.
+
+### 2. Load Budget Data
+
+The provided `SalesBudget.xlsx` workbook was loaded into Power BI.
+
+The budget spreadsheet was added to the model and organized as a fact table. The query was renamed:
+
+```text
+FACT_Budget
+```
+
+The budget data is intended to support comparison between actual internet sales and planned sales performance.
+
+### 3. Create Date Relationship
+
+A relationship was created between the budget and calendar tables using the `Date` field:
+
+```text
+FACT_Budget[Date]
+        ↓
+DIM_Calendar[Date]
+```
+
+The relationship is configured as:
+
+* **Cardinality:** Many-to-one (`*:1`)
+* **Cross-filter direction:** Single
+* **Active relationship:** Yes
+
+This allows the calendar dimension to filter the budget data by date.
+
+### 4. Create DAX Measures
+
+Initial DAX measures were created to support the analysis.
+
+#### Sales
+
+Created in `FACT_InternetSales`:
+
+```DAX
+Sales = SUM(FACT_InternetSales[SalesAmount])
+```
+
+This measure calculates total internet sales.
+
+#### Budget Amount
+
+Created in `FACT_Budget`:
+
+```DAX
+Budget Amount = SUM(FACT_Budget[Budget])
+```
+
+This measure calculates the total budget amount in the loaded budget table.
+
+#### Sales / Budget Amount
+
+Created in `FACT_Budget`:
+
+```DAX
+Sales / Budget Amount = DIVIDE([Sales], [Budget Amount])
+```
+
+The resulting measure was formatted as a percentage to show sales performance relative to the budget.
+
+This KPI will later be used to evaluate actual sales performance against the planned budget.
+
+### 5. Configure Geographic Data
+
+The `Customer City` field in `DIM_Customers` was assigned the Power BI **Data Category: City**.
+
+This allows Power BI to recognize the field as geographic information and supports location-based analysis and mapping where required.
+
+### 6. Data Model Relationships
+
+The Power BI model was then adjusted to connect the dimension and fact tables.
+
+The model is structured around the internet sales fact table and supporting dimensions, allowing filters from dimension tables to flow into the sales data.
+
+The current model includes:
+
+```text
+DIM_Calendar
+     │
+     ├────────── FACT_Budget
+     │
+     └────────── FACT_InternetSales
+                         │
+                         ├────────── DIM_Customers
+                         │
+                         └────────── DIM_Products
+```
+
+Additional modelling and validation will be performed as the dashboard development continues.
 
 ## Project Workflow
 
@@ -335,12 +425,13 @@ CSV/
 8. Query and analyze internet sales data using SQL
 9. Prepare the required data for Power BI
 10. Import/connect the prepared datasets to Power BI
-11. Build the Power BI data model and relationships
-12. Create DAX measures and calculated columns
-13. Incorporate the 2021 budget data
-14. Develop interactive dashboards and visualizations
-15. Validate the dashboard against the business requirements
-16. Extract and document key business insights
+11. Load and integrate the sales budget data
+12. Build the Power BI data model and relationships
+13. Create initial DAX measures and KPIs
+14. Configure geographic data categories
+15. Develop interactive dashboards and visualizations
+16. Validate the dashboard against the business requirements
+17. Extract and document key business insights
 
 ## Analysis
 
@@ -364,28 +455,31 @@ The Power BI dashboard will be developed after the data model has been completed
 
 The dashboard development process will include:
 
-1. **Load Data & Create Data Model**
-   - Import prepared datasets
-   - Organize dimension and fact tables
-   - Create relationships
+1. **Dashboard Design**
 
-2. **Dashboard Design Process**
-   - Create DAX measures
-   - Develop KPIs
-   - Build sales trend visualizations
-   - Analyze product and customer performance
-   - Add filters and slicers
-   - Compare actual sales against budget
+   * Create KPI cards
+   * Build sales trend visualizations
+   * Analyze product and customer performance
+   * Add filters and slicers
+   * Compare actual sales against budget
+
+2. **Dashboard Validation**
+
+   * Validate calculations
+   * Confirm relationships and filter behaviour
+   * Check that visuals answer the defined business questions
 
 3. **Publish & Share Report**
-   - Publish the Power BI report
-   - Configure report sharing
-   - Validate the published dashboard
 
-4. **Wrap Up & Ending**
-   - Review business requirements
-   - Document insights
-   - Add final dashboard screenshots
+   * Publish the Power BI report
+   * Configure report sharing
+   * Validate the published dashboard
+
+4. **Wrap Up**
+
+   * Review business requirements
+   * Document insights
+   * Add final dashboard screenshots
 
 ## SQL Analysis
 
@@ -418,12 +512,14 @@ Sales-Analysis/
 ├── DASHBOARD/
 │   └── sales-analysis.pbix
 │
-│
 ├── CSV/
 │   ├── DIM_Calendar.csv
 │   ├── DIM_Customers.csv
 │   ├── DIM_Products.csv
 │   └── FACT_InternetSales.csv
+│
+├── EXCEL/
+│   └── SalesBudget.xlsx
 │
 └── README.md
 ```
