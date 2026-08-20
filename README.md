@@ -224,8 +224,6 @@ The transformation:
 * Renames the resulting city field to `Customer City`.
 * Excludes customer attributes that are not required for the current analysis.
 
-This creates a cleaner customer dimension that is easier to use for filtering and reporting in Power BI.
-
 The prepared customer data was exported as:
 
 ```text
@@ -329,11 +327,11 @@ The budget spreadsheet was added to the model and organized as a fact table. The
 FACT_Budget
 ```
 
-The budget data is intended to support comparison between actual internet sales and planned sales performance.
+The budget data is used to support comparison between actual internet sales and planned sales performance.
 
 ### 3. Create Date Relationship
 
-A relationship was created between the budget and calendar tables using the `Date` field:
+A relationship was created between the budget and calendar tables using the `Date` field.
 
 ```text
 FACT_Budget[Date]
@@ -347,15 +345,11 @@ The relationship is configured as:
 * **Cross-filter direction:** Single
 * **Active relationship:** Yes
 
-This allows the calendar dimension to filter the budget data by date.
-
 ### 4. Create DAX Measures
 
 Initial DAX measures were created to support the analysis.
 
 #### Sales
-
-Created in `FACT_InternetSales`:
 
 ```DAX
 Sales = SUM(FACT_InternetSales[SalesAmount])
@@ -365,17 +359,13 @@ This measure calculates total internet sales.
 
 #### Budget Amount
 
-Created in `FACT_Budget`:
-
 ```DAX
 Budget Amount = SUM(FACT_Budget[Budget])
 ```
 
-This measure calculates the total budget amount in the loaded budget table.
+This measure calculates the total budget amount.
 
 #### Sales / Budget Amount
-
-Created in `FACT_Budget`:
 
 ```DAX
 Sales / Budget Amount = DIVIDE([Sales], [Budget Amount])
@@ -383,35 +373,103 @@ Sales / Budget Amount = DIVIDE([Sales], [Budget Amount])
 
 The resulting measure was formatted as a percentage to show sales performance relative to the budget.
 
-This KPI will later be used to evaluate actual sales performance against the planned budget.
-
 ### 5. Configure Geographic Data
 
 The `Customer City` field in `DIM_Customers` was assigned the Power BI **Data Category: City**.
 
-This allows Power BI to recognize the field as geographic information and supports location-based analysis and mapping where required.
+This allows Power BI to recognize the column as geographic information for location-based analysis.
 
 ### 6. Data Model Relationships
 
-The Power BI model was then adjusted to connect the dimension and fact tables.
+The Power BI model was adjusted to establish the relationships between the dimension and fact tables.
 
-The model is structured around the internet sales fact table and supporting dimensions, allowing filters from dimension tables to flow into the sales data.
+The current model is centered around `FACT_InternetSales`, with the relevant dimension tables providing filtering and descriptive context.
 
-The current model includes:
+## Dashboard Design
+
+The dashboard design stage has now begun.
+
+The initial dashboard layout has been created to establish the visual structure and filtering experience before adding the remaining analytical visuals.
+
+### 1. Dashboard Header
+
+A text box was added at the top of the report page to serve as the dashboard header.
+
+The header text was set to:
 
 ```text
-DIM_Calendar
-     │
-     ├────────── FACT_Budget
-     │
-     └────────── FACT_InternetSales
-                         │
-                         ├────────── DIM_Customers
-                         │
-                         └────────── DIM_Products
+Sales Overview
 ```
 
-Additional modelling and validation will be performed as the dashboard development continues.
+The top padding of the text box was adjusted to improve the visual positioning of the title.
+
+### 2. Canvas Formatting
+
+The report canvas background was changed to grey with **50% transparency**.
+
+This provides the initial visual foundation for the dashboard and creates separation between the canvas and report elements.
+
+### 3. Initial Dashboard Slicers
+
+Four slicers were added to allow users to filter the dashboard interactively.
+
+#### Customer City
+
+The `Customer City` field from `DIM_Customers` was added as a slicer.
+
+This allows the report to be filtered by customer location.
+
+#### Sub Category
+
+The `Sub Category` field from `DIM_Products` was added as a slicer.
+
+This allows users to filter products by subcategory.
+
+#### Category
+
+The `Product Category` field from `DIM_Products` was added as a slicer and renamed to:
+
+```text
+Category
+```
+
+This provides a simpler label for the dashboard user.
+
+#### Product Name
+
+The `Product Name` field from `DIM_Products` was added as a slicer.
+
+This allows users to filter the dashboard by individual products.
+
+### Current Dashboard Layout
+
+The dashboard currently contains:
+
+* `Sales Overview` header
+* Grey canvas background with 50% transparency
+* Customer City slicer
+* Sub Category slicer
+* Category slicer
+* Product Name slicer
+
+The remaining dashboard visuals will be developed in subsequent stages.
+
+### Upcoming Dashboard Development
+
+The next stage of dashboard development will include:
+
+1. **Import Custom Visual**
+2. **Create Measure Table**
+3. **Pie Chart**
+4. **Line Chart**
+5. **Bar Charts**
+6. **Map Graph**
+7. **Top 10 Graphs**
+8. **Gradient Bar Chart Color**
+9. **Customer Details**
+10. **Pivot Table**
+
+These components will progressively build the complete interactive sales dashboard around the existing data model and business requirements.
 
 ## Project Workflow
 
@@ -422,16 +480,17 @@ Additional modelling and validation will be performed as the dashboard developme
 5. Identify the tables and fields required to answer the business questions
 6. Cleanse and transform the required data
 7. Export prepared datasets
-8. Query and analyze internet sales data using SQL
-9. Prepare the required data for Power BI
-10. Import/connect the prepared datasets to Power BI
-11. Load and integrate the sales budget data
-12. Build the Power BI data model and relationships
-13. Create initial DAX measures and KPIs
-14. Configure geographic data categories
-15. Develop interactive dashboards and visualizations
+8. Import the prepared datasets into Power BI
+9. Load and integrate the sales budget
+10. Build the Power BI data model and relationships
+11. Create initial DAX measures and KPIs
+12. Configure geographic data categories
+13. Begin dashboard layout and design
+14. Add interactive slicers and filters
+15. Develop analytical visualizations
 16. Validate the dashboard against the business requirements
 17. Extract and document key business insights
+18. Finalize and publish the Power BI report
 
 ## Analysis
 
@@ -447,45 +506,11 @@ The analysis will focus on the following business areas:
 
 The dashboard will allow users to filter and explore sales performance by relevant customers, products, sales representatives, and time periods.
 
-## Dashboard
-
-The Power BI dashboard will be developed after the data model has been completed.
-
-### Dashboard Development Agenda
-
-The dashboard development process will include:
-
-1. **Dashboard Design**
-
-   * Create KPI cards
-   * Build sales trend visualizations
-   * Analyze product and customer performance
-   * Add filters and slicers
-   * Compare actual sales against budget
-
-2. **Dashboard Validation**
-
-   * Validate calculations
-   * Confirm relationships and filter behaviour
-   * Check that visuals answer the defined business questions
-
-3. **Publish & Share Report**
-
-   * Publish the Power BI report
-   * Configure report sharing
-   * Validate the published dashboard
-
-4. **Wrap Up**
-
-   * Review business requirements
-   * Document insights
-   * Add final dashboard screenshots
-
 ## SQL Analysis
 
-SQL queries used for data exploration, preparation, transformation, and analysis will be added here.
+SQL queries used for data exploration, preparation, transformation, and analysis will be maintained in the `SQL` directory.
 
-The SQL analysis will focus on extracting and preparing the data required to answer the business questions defined in the user stories.
+The SQL analysis focuses on extracting and preparing the data required to answer the business questions defined in the user stories.
 
 ## Key Insights
 
