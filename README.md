@@ -355,15 +355,11 @@ Initial DAX measures were created to support the analysis.
 Sales = SUM(FACT_InternetSales[SalesAmount])
 ```
 
-This measure calculates total internet sales.
-
 #### Budget Amount
 
 ```DAX
 Budget Amount = SUM(FACT_Budget[Budget])
 ```
-
-This measure calculates the total budget amount.
 
 #### Sales / Budget Amount
 
@@ -371,13 +367,13 @@ This measure calculates the total budget amount.
 Sales / Budget Amount = DIVIDE([Sales], [Budget Amount])
 ```
 
-The resulting measure was formatted as a percentage to show sales performance relative to the budget.
+The `Sales / Budget Amount` measure was formatted as a percentage to represent sales performance relative to budget.
 
 ### 5. Configure Geographic Data
 
 The `Customer City` field in `DIM_Customers` was assigned the Power BI **Data Category: City**.
 
-This allows Power BI to recognize the column as geographic information for location-based analysis.
+This allows Power BI to recognize the field as geographic information for location-based analysis.
 
 ### 6. Data Model Relationships
 
@@ -387,9 +383,9 @@ The current model is centered around `FACT_InternetSales`, with the relevant dim
 
 ## Dashboard Design
 
-The dashboard design stage has now begun.
+The dashboard design stage has been completed in terms of its **initial skeleton and filtering layout**.
 
-The initial dashboard layout has been created to establish the visual structure and filtering experience before adding the remaining analytical visuals.
+The purpose of this stage was to establish the page structure, title, background, and primary report-level filtering controls before developing the analytical visualizations.
 
 ### 1. Dashboard Header
 
@@ -401,65 +397,72 @@ The header text was set to:
 Sales Overview
 ```
 
-The top padding of the text box was adjusted to improve the visual positioning of the title.
+The top padding of the text box was increased to improve the positioning of the title.
 
 ### 2. Canvas Formatting
 
 The report canvas background was changed to grey with **50% transparency**.
 
-This provides the initial visual foundation for the dashboard and creates separation between the canvas and report elements.
+This establishes the initial visual theme of the dashboard and provides a consistent background for the report elements.
 
-### 3. Initial Dashboard Slicers
+### 3. Customer and Product Slicers
 
-Four slicers were added to allow users to filter the dashboard interactively.
+The following slicers were added to provide interactive filtering:
 
-#### Customer City
+* **Customer City** – filters the dashboard by customer location.
+* **Sub Category** – filters products by product subcategory.
+* **Category** – uses `Product Category` and was renamed to `Category`.
+* **Product Name** – filters the dashboard by individual product.
 
-The `Customer City` field from `DIM_Customers` was added as a slicer.
+### 4. Year Slicer
 
-This allows the report to be filtered by customer location.
+A new slicer was added using the `Year` field from `DIM_Calendar`.
 
-#### Sub Category
+The slicer was changed to a **Tile** style and positioned across the top of the dashboard.
 
-The `Sub Category` field from `DIM_Products` was added as a slicer.
+This provides a simple year-based navigation control for the report.
 
-This allows users to filter products by subcategory.
+### 5. Month Slicer
 
-#### Category
+The Year slicer was copied and used as the basis for a second time-based slicer.
 
-The `Product Category` field from `DIM_Products` was added as a slicer and renamed to:
+The `MonthShort` field from `DIM_Calendar` was added to the new slicer.
+
+The `MonthShort` column was sorted by `MonthNo` so that the months appear in chronological order rather than alphabetically.
+
+The resulting month selector provides a chronological:
 
 ```text
-Category
+Jan → Feb → Mar → ... → Nov → Dec
 ```
 
-This provides a simpler label for the dashboard user.
+### Current Dashboard Skeleton
 
-#### Product Name
-
-The `Product Name` field from `DIM_Products` was added as a slicer.
-
-This allows users to filter the dashboard by individual products.
-
-### Current Dashboard Layout
-
-The dashboard currently contains:
+The completed dashboard skeleton currently contains:
 
 * `Sales Overview` header
-* Grey canvas background with 50% transparency
+* Grey canvas with 50% transparency
+* Year slicer
+* Month slicer
 * Customer City slicer
 * Sub Category slicer
 * Category slicer
 * Product Name slicer
 
-The remaining dashboard visuals will be developed in subsequent stages.
+At this stage, the dashboard layout and filtering structure are complete. The analytical charts and detailed visualizations will be added in the next stage.
 
-### Upcoming Dashboard Development
+### Dashboard Preview
 
-The next stage of dashboard development will include:
+![Sales Overview Dashboard Preview](IMAGES/dashboard.png)
+
+## Upcoming Dashboard Development
+
+The next dashboard development stage will focus on building the analytical visuals and supporting components.
+
+Planned components include:
 
 1. **Import Custom Visual**
-2. **Create Measure Table**
+2. **Measure Table**
 3. **Pie Chart**
 4. **Line Chart**
 5. **Bar Charts**
@@ -469,7 +472,7 @@ The next stage of dashboard development will include:
 9. **Customer Details**
 10. **Pivot Table**
 
-These components will progressively build the complete interactive sales dashboard around the existing data model and business requirements.
+These components will progressively transform the completed dashboard skeleton into the final interactive sales analytics dashboard.
 
 ## Project Workflow
 
@@ -485,9 +488,9 @@ These components will progressively build the complete interactive sales dashboa
 10. Build the Power BI data model and relationships
 11. Create initial DAX measures and KPIs
 12. Configure geographic data categories
-13. Begin dashboard layout and design
-14. Add interactive slicers and filters
-15. Develop analytical visualizations
+13. Build the dashboard skeleton and report layout
+14. Add time-based and analytical slicers
+15. Develop charts and analytical visualizations
 16. Validate the dashboard against the business requirements
 17. Extract and document key business insights
 18. Finalize and publish the Power BI report
@@ -545,6 +548,9 @@ Sales-Analysis/
 │
 ├── EXCEL/
 │   └── SalesBudget.xlsx
+│
+├── IMAGES/
+│   └── dashboard.png
 │
 └── README.md
 ```
