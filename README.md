@@ -383,96 +383,61 @@ The current model is centered around `FACT_InternetSales`, with the relevant dim
 
 ## Dashboard Design
 
-The dashboard design stage has been completed in terms of its **initial skeleton and filtering layout**.
+The dashboard skeleton and filtering structure have been established.
 
-The purpose of this stage was to establish the page structure, title, background, and primary report-level filtering controls before developing the analytical visualizations.
-
-### 1. Dashboard Header
-
-A text box was added at the top of the report page to serve as the dashboard header.
-
-The header text was set to:
-
-```text
-Sales Overview
-```
-
-The top padding of the text box was increased to improve the positioning of the title.
-
-### 2. Canvas Formatting
-
-The report canvas background was changed to grey with **50% transparency**.
-
-This establishes the initial visual theme of the dashboard and provides a consistent background for the report elements.
-
-### 3. Customer and Product Slicers
-
-The following slicers were added to provide interactive filtering:
-
-* **Customer City** – filters the dashboard by customer location.
-* **Sub Category** – filters products by product subcategory.
-* **Category** – uses `Product Category` and was renamed to `Category`.
-* **Product Name** – filters the dashboard by individual product.
-
-### 4. Year Slicer
-
-A new slicer was added using the `Year` field from `DIM_Calendar`.
-
-The slicer was changed to a **Tile** style and positioned across the top of the dashboard.
-
-This provides a simple year-based navigation control for the report.
-
-### 5. Month Slicer
-
-The Year slicer was copied and used as the basis for a second time-based slicer.
-
-The `MonthShort` field from `DIM_Calendar` was added to the new slicer.
-
-The `MonthShort` column was sorted by `MonthNo` so that the months appear in chronological order rather than alphabetically.
-
-The resulting month selector provides a chronological:
-
-```text
-Jan → Feb → Mar → ... → Nov → Dec
-```
-
-### Current Dashboard Skeleton
-
-The completed dashboard skeleton currently contains:
+The dashboard currently contains:
 
 * `Sales Overview` header
-* Grey canvas with 50% transparency
 * Year slicer
 * Month slicer
 * Customer City slicer
 * Sub Category slicer
 * Category slicer
 * Product Name slicer
+* Grey canvas background with 50% transparency
 
-At this stage, the dashboard layout and filtering structure are complete. The analytical charts and detailed visualizations will be added in the next stage.
+The Year slicer uses the `Year` field from `DIM_Calendar` and is displayed using a tile-style layout.
 
-### Dashboard Preview
+The Month slicer uses `MonthShort` from `DIM_Calendar`. The `MonthShort` column is sorted by `MonthNo` so that the months appear chronologically from January through December.
 
-![Sales Overview Dashboard Preview](IMAGES/dashboard.png)
+## Dashboard KPI
+
+The first analytical KPI visual has now been added to the dashboard.
+
+### Sales & Budget Amount
+
+A KPI/card visual was created using the following measures:
+
+* `Sales`
+* `Budget Amount`
+
+The title of the visual was set to:
+
+```text
+Sales & Budget Amount
+```
+
+The current KPI displays both total sales and budget amount side by side, providing an immediate comparison of actual sales against the budget.
+
+### Current Dashboard Preview
+
+![Sales & Budget Dashboard Preview](IMAGES/dashboard.png)
 
 ## Upcoming Dashboard Development
 
-The next dashboard development stage will focus on building the analytical visuals and supporting components.
+The next stage of dashboard development will focus on adding the remaining analytical components:
 
-Planned components include:
+1. **Measure Table**
+2. **Pie Chart**
+3. **Line Chart**
+4. **Bar Charts**
+5. **Map Graph**
+6. **Top 10 Graphs**
+7. **Gradient Bar Chart Color**
+8. **Customer Details**
+9. **Pivot Table**
 
-1. **Import Custom Visual**
-2. **Measure Table**
-3. **Pie Chart**
-4. **Line Chart**
-5. **Bar Charts**
-6. **Map Graph**
-7. **Top 10 Graphs**
-8. **Gradient Bar Chart Color**
-9. **Customer Details**
-10. **Pivot Table**
-
-These components will progressively transform the completed dashboard skeleton into the final interactive sales analytics dashboard.
+These components will progressively transform the dashboard skeleton into the final interactive sales analytics dashboard.
 
 ## Project Workflow
 
@@ -490,10 +455,11 @@ These components will progressively transform the completed dashboard skeleton i
 12. Configure geographic data categories
 13. Build the dashboard skeleton and report layout
 14. Add time-based and analytical slicers
-15. Develop charts and analytical visualizations
-16. Validate the dashboard against the business requirements
-17. Extract and document key business insights
-18. Finalize and publish the Power BI report
+15. Create KPI visuals
+16. Develop charts and analytical visualizations
+17. Validate the dashboard against the business requirements
+18. Extract and document key business insights
+19. Finalize and publish the Power BI report
 
 ## Analysis
 
