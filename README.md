@@ -12,12 +12,12 @@ The Sales Manager, Steven, requested an improvement to the existing internet sal
 
 The primary business requirements are to provide a clear overview of:
 
-* How much has been sold
-* Which products are selling the most
-* Which customers are purchasing the most
-* How sales performance has changed over time
-* Sales performance by sales representative
-* Sales performance compared against the provided budget
+- How much has been sold
+- Which products are selling the most
+- Which customers are purchasing the most
+- How sales performance has changed over time
+- Sales performance by sales representative
+- Sales performance compared against the provided budget
 
 The business normally analyzes sales performance by looking approximately two years back in time. A sales budget was provided separately in an Excel spreadsheet to enable comparison between actual sales performance and budgeted performance.
 
@@ -42,9 +42,9 @@ The requested solution is an interactive Power BI dashboard that allows users to
 
 **Acceptance Criteria:**
 
-* Power BI dashboard providing an overview of internet sales
-* Dashboard data updates once a day
-* Ability to identify top-performing customers and products
+- Power BI dashboard providing an overview of internet sales
+- Dashboard data updates once a day
+- Ability to identify top-performing customers and products
 
 #### 2. Sales Representative – Customer Analysis
 
@@ -52,8 +52,8 @@ The requested solution is an interactive Power BI dashboard that allows users to
 
 **Acceptance Criteria:**
 
-* Power BI dashboard provides customer-level sales analysis
-* Users can filter the data by individual customer
+- Power BI dashboard provides customer-level sales analysis
+- Users can filter the data by individual customer
 
 #### 3. Sales Representative – Product Analysis
 
@@ -61,8 +61,8 @@ The requested solution is an interactive Power BI dashboard that allows users to
 
 **Acceptance Criteria:**
 
-* Power BI dashboard provides product-level sales analysis
-* Users can filter the data by individual product
+- Power BI dashboard provides product-level sales analysis
+- Users can filter the data by individual product
 
 #### 4. Sales Manager – Sales vs Budget
 
@@ -70,19 +70,19 @@ The requested solution is an interactive Power BI dashboard that allows users to
 
 **Acceptance Criteria:**
 
-* Power BI dashboard provides sales trends over time
-* Dashboard includes graphs and KPIs
-* Actual sales can be compared against the budget
+- Power BI dashboard provides sales trends over time
+- Dashboard includes graphs and KPIs
+- Actual sales can be compared against the budget
 
 ## Tools & Technologies
 
-* SQL Server
-* SQL Server Management Studio (SSMS)
-* Power BI
-* DAX
-* SQL
-* AdventureWorksDW2022
-* Excel
+- SQL Server
+- SQL Server Management Studio (SSMS)
+- Power BI
+- DAX
+- SQL
+- AdventureWorksDW2022
+- Excel
 
 ## Dataset
 
@@ -128,14 +128,14 @@ The original AdventureWorksDW dataset contains historical data from 2010–2014.
 
 The script:
 
-* Calculates the current year.
-* Determines the number of years the existing data needs to be shifted.
-* Extends the `DimDate` table with additional dates.
-* Updates date fields across relevant fact and dimension tables.
-* Updates the associated `DateKey` values.
-* Updates year-based fields such as `CalendarYear`, `FirstOrderYear`, `LastOrderYear`, and `YearOpened`.
-* Temporarily removes relevant foreign key constraints while the date updates are performed.
-* Recreates the foreign key constraints after the date updates are complete.
+- Calculates the current year.
+- Determines the number of years the existing data needs to be shifted.
+- Extends the `DimDate` table with additional dates.
+- Updates date fields across relevant fact and dimension tables.
+- Updates the associated `DateKey` values.
+- Updates year-based fields such as `CalendarYear`, `FirstOrderYear`, `LastOrderYear`, and `YearOpened`.
+- Temporarily removes relevant foreign key constraints while the date updates are performed.
+- Recreates the foreign key constraints after the date updates are complete.
 
 Run the date-update SQL script against the `AdventureWorksDW2022` database in SSMS.
 
@@ -143,11 +143,11 @@ Run the date-update SQL script against the `AdventureWorksDW2022` database in SS
 
 After running the update script, verify that:
 
-* `AdventureWorksDW2022` is accessible in SSMS.
-* The `DimDate` table contains the newly added dates.
-* Fact and dimension tables contain the updated dates.
-* Date keys remain consistent with the updated dates.
-* Foreign key constraints have been restored successfully.
+- `AdventureWorksDW2022` is accessible in SSMS.
+- The `DimDate` table contains the newly added dates.
+- Fact and dimension tables contain the updated dates.
+- Date keys remain consistent with the updated dates.
+- Foreign key constraints have been restored successfully.
 
 ## Data Preparation
 
@@ -165,19 +165,19 @@ The required tables were identified based on the business request and user stori
 
 The analytical dataset requires data related to:
 
-* Internet sales
-* Dates and time periods
-* Products
-* Customers
-* Sales representatives
-* Budget data
+- Internet sales
+- Dates and time periods
+- Products
+- Customers
+- Sales representatives
+- Budget data
 
 The following AdventureWorks tables were prepared for the analytical dataset:
 
-* `DimDate`
-* `DimCustomer`
-* `DimProduct`
-* `FactInternetSales`
+- `DimDate`
+- `DimCustomer`
+- `DimProduct`
+- `FactInternetSales`
 
 Additional supporting tables such as geography, product subcategory, and product category were used during transformation to enrich the prepared dimension tables.
 
@@ -191,16 +191,16 @@ The original `DimDate` table contains a number of fields that are not required f
 
 The transformation:
 
-* Keeps `DateKey` as the date dimension key.
-* Renames `FullDateAlternateKey` to `Date`.
-* Uses the English day name as `Day`.
-* Renames `WeekNumberOfYear` to `WeekNr`.
-* Uses `EnglishMonthName` as `Month`.
-* Creates `MonthShort` using the first three characters of the month name.
-* Renames `MonthNumberOfYear` to `MonthNo`.
-* Renames `CalendarQuarter` to `Quarter`.
-* Renames `CalendarYear` to `Year`.
-* Excludes unused day, language, semester, and fiscal fields.
+- Keeps `DateKey` as the date dimension key.
+- Renames `FullDateAlternateKey` to `Date`.
+- Uses the English day name as `Day`.
+- Renames `WeekNumberOfYear` to `WeekNr`.
+- Uses `EnglishMonthName` as `Month`.
+- Creates `MonthShort` using the first three characters of the month name.
+- Renames `MonthNumberOfYear` to `MonthNo`.
+- Renames `CalendarQuarter` to `Quarter`.
+- Renames `CalendarYear` to `Year`.
+- Excludes unused day, language, semester, and fiscal fields.
 
 The prepared calendar data was exported as:
 
@@ -214,15 +214,15 @@ The `DimCustomer` table was reduced to the customer attributes required for anal
 
 The transformation:
 
-* Keeps `CustomerKey` as the customer identifier.
-* Renames `FirstName` to `First Name`.
-* Renames `LastName` to `Last Name`.
-* Creates a new `Full Name` field by combining first and last names.
-* Converts the source gender codes (`M` and `F`) into readable values (`Male` and `Female`).
-* Keeps `DateFirstPurchase` for customer purchase analysis.
-* Joins `DimGeography` using `GeographyKey` to add the customer's city.
-* Renames the resulting city field to `Customer City`.
-* Excludes customer attributes that are not required for the current analysis.
+- Keeps `CustomerKey` as the customer identifier.
+- Renames `FirstName` to `First Name`.
+- Renames `LastName` to `Last Name`.
+- Creates a new `Full Name` field by combining first and last names.
+- Converts the source gender codes (`M` and `F`) into readable values (`Male` and `Female`).
+- Keeps `DateFirstPurchase` for customer purchase analysis.
+- Joins `DimGeography` using `GeographyKey` to add the customer's city.
+- Renames the resulting city field to `Customer City`.
+- Excludes customer attributes that are not required for the current analysis.
 
 The prepared customer data was exported as:
 
@@ -236,18 +236,18 @@ The `DimProduct` table was transformed to provide the product information requir
 
 The transformation:
 
-* Keeps `ProductKey` as the product identifier.
-* Renames `ProductAlternateKey` to `ProductItemCode`.
-* Renames `EnglishProductName` to `Product Name`.
-* Joins `DimProductSubcategory` to obtain the product subcategory.
-* Joins `DimProductCategory` to obtain the product category.
-* Renames these fields to `Sub Category` and `Product Category`.
-* Renames `Color` to `Product Color`.
-* Renames `Size` to `Product Size`.
-* Keeps `ProductLine`.
-* Renames `ModelName` to `Product Model Name`.
-* Keeps `EnglishDescription` as `Product Description`.
-* Uses `ISNULL()` to replace missing product status values with `Outdated`.
+- Keeps `ProductKey` as the product identifier.
+- Renames `ProductAlternateKey` to `ProductItemCode`.
+- Renames `EnglishProductName` to `Product Name`.
+- Joins `DimProductSubcategory` to obtain the product subcategory.
+- Joins `DimProductCategory` to obtain the product category.
+- Renames these fields to `Sub Category` and `Product Category`.
+- Renames `Color` to `Product Color`.
+- Renames `Size` to `Product Size`.
+- Keeps `ProductLine`.
+- Renames `ModelName` to `Product Model Name`.
+- Keeps `EnglishDescription` as `Product Description`.
+- Uses `ISNULL()` to replace missing product status values with `Outdated`.
 
 The prepared product data was exported as:
 
@@ -263,13 +263,13 @@ The transformation selects the fields required to connect sales transactions to 
 
 The selected fields include:
 
-* `ProductKey`
-* `OrderDateKey`
-* `DueDateKey`
-* `ShipDateKey`
-* `CustomerKey`
-* `SalesOrderNumber`
-* `SalesAmount`
+- `ProductKey`
+- `OrderDateKey`
+- `DueDateKey`
+- `ShipDateKey`
+- `CustomerKey`
+- `SalesOrderNumber`
+- `SalesAmount`
 
 A dynamic date filter was applied:
 
@@ -341,9 +341,9 @@ DIM_Calendar[Date]
 
 The relationship is configured as:
 
-* **Cardinality:** Many-to-one (`*:1`)
-* **Cross-filter direction:** Single
-* **Active relationship:** Yes
+- **Cardinality:** Many-to-one (`*:1`)
+- **Cross-filter direction:** Single
+- **Active relationship:** Yes
 
 ### 4. Create DAX Measures
 
@@ -387,57 +387,95 @@ The dashboard skeleton and filtering structure have been established.
 
 The dashboard currently contains:
 
-* `Sales Overview` header
-* Year slicer
-* Month slicer
-* Customer City slicer
-* Sub Category slicer
-* Category slicer
-* Product Name slicer
-* Grey canvas background with 50% transparency
+- `Sales Overview` header
+- Year slicer
+- Month slicer
+- Customer City slicer
+- Sub Category slicer
+- Category slicer
+- Product Name slicer
+- Grey canvas background with 50% transparency
 
 The Year slicer uses the `Year` field from `DIM_Calendar` and is displayed using a tile-style layout.
 
 The Month slicer uses `MonthShort` from `DIM_Calendar`. The `MonthShort` column is sorted by `MonthNo` so that the months appear chronologically from January through December.
 
-## Dashboard KPI
+## Dashboard KPI & Visualizations
 
-The first analytical KPI visual has now been added to the dashboard.
+### 1. Key Measures Table
 
-### Sales & Budget Amount
+A new table named `Key Measures` was created using **Enter Data** in Power BI.
 
-A KPI/card visual was created using the following measures:
+The purpose of this table is to provide a dedicated location for the report's measures rather than keeping them distributed across the source fact tables.
 
-* `Sales`
-* `Budget Amount`
+The existing measures were moved into the `Key Measures` table and the automatically generated `Column1` field was removed.
 
-The title of the visual was set to:
+The measure formatting was also standardized:
+
+- Numeric measures were set to **Whole Number** format.
+- `Sales / Budget Amount` remained formatted as a percentage.
+
+### 2. Sales & Budget Amount KPI
+
+The existing KPI/card visual was updated to display:
+
+- `Sales`
+- `Budget Amount`
+
+The visual title was set to:
 
 ```text
 Sales & Budget Amount
 ```
 
-The current KPI displays both total sales and budget amount side by side, providing an immediate comparison of actual sales against the budget.
+Reference labels were also added to the KPI cards:
+
+- **Sales - Budgets**
+- **Sales / Budget Amount**
+
+The KPI now provides a high-level comparison between actual sales and budget performance.
+
+### 3. Sales by Product Category
+
+A donut chart was created to analyze sales distribution across product categories.
+
+The visual uses:
+
+- **Legend:** `Product Category`
+- **Values:** `Sales`
+
+The legend title was turned off and the legend was positioned at the **Top Left** of the visual.
+
+This allows the dashboard to show the contribution of each product category to total sales.
+
+### 4. Sales and Budget Amount by Month
+
+A line chart was created to compare sales and budget performance over time.
+
+The visual uses:
+
+- **X-axis:** `MonthShort`
+- **Y-axis:** `Sales`
+- **Y-axis:** `Budget Amount`
+
+The chart provides a month-by-month comparison between actual sales and budget amounts and builds on the chronological sorting of `MonthShort` established during the dashboard skeleton stage.
 
 ### Current Dashboard Preview
 
-![Sales & Budget Dashboard Preview](IMAGES/dashboard.png)
+![Sales Analytics Dashboard Preview](IMAGES/dashboard.png)
 
 ## Upcoming Dashboard Development
 
 The next stage of dashboard development will focus on adding the remaining analytical components:
 
-1. **Measure Table**
-2. **Pie Chart**
-3. **Line Chart**
-4. **Bar Charts**
-5. **Map Graph**
-6. **Top 10 Graphs**
-7. **Gradient Bar Chart Color**
-8. **Customer Details**
-9. **Pivot Table**
+1. **Bar Charts**
+2. **Map Graph**
+3. **Top 10 Graphs**
+4. **Gradient Bar Chart Color**
+5. **Customer Details**
+6. **Pivot Table**
 
-These components will progressively transform the dashboard skeleton into the final interactive sales analytics dashboard.
+These components will progressively transform the current dashboard into the final interactive sales analytics dashboard.
 
 ## Project Workflow
 
@@ -456,22 +494,24 @@ These components will progressively transform the dashboard skeleton into the fi
 13. Build the dashboard skeleton and report layout
 14. Add time-based and analytical slicers
 15. Create KPI visuals
-16. Develop charts and analytical visualizations
-17. Validate the dashboard against the business requirements
-18. Extract and document key business insights
-19. Finalize and publish the Power BI report
+16. Organize report measures in a dedicated measure table
+17. Create category and time-based sales visualizations
+18. Develop additional charts and analytical visuals
+19. Validate the dashboard against the business requirements
+20. Extract and document key business insights
+21. Finalize and publish the Power BI report
 
 ## Analysis
 
 The analysis will focus on the following business areas:
 
-* **Internet Sales Performance**
-* **Product Performance**
-* **Customer Performance**
-* **Sales Representative Performance**
-* **Sales Trends Over Time**
-* **Actual Sales vs Budget**
-* **Key Sales KPIs**
+- **Internet Sales Performance**
+- **Product Performance**
+- **Customer Performance**
+- **Sales Representative Performance**
+- **Sales Trends Over Time**
+- **Actual Sales vs Budget**
+- **Key Sales KPIs**
 
 The dashboard will allow users to filter and explore sales performance by relevant customers, products, sales representatives, and time periods.
 
@@ -487,12 +527,12 @@ Key findings from the analysis will be documented here once the SQL and Power BI
 
 Insights will focus on areas such as:
 
-* Top-performing products
-* Highest-value customers
-* Sales representative performance
-* Sales trends
-* Budget performance
-* Areas of over- and under-performance
+- Top-performing products
+- Highest-value customers
+- Sales representative performance
+- Sales trends
+- Budget performance
+- Areas of over- and under-performance
 
 ## Project Structure
 
