@@ -404,20 +404,20 @@ The Month slicer uses `MonthShort` from `DIM_Calendar`. The `MonthShort` column 
 
 ### 1. Key Measures Table
 
-A new table named `Key Measures` was created using **Enter Data** in Power BI.
+A table named `Key Measures` was created using **Enter Data** in Power BI.
 
-The purpose of this table is to provide a dedicated location for the report's measures rather than keeping them distributed across the source fact tables.
+The purpose of this table is to provide a dedicated location for the report's measures.
 
 The existing measures were moved into the `Key Measures` table and the automatically generated `Column1` field was removed.
 
-The measure formatting was also standardized:
+Measure formatting was standardized as follows:
 
 - Numeric measures were set to **Whole Number** format.
 - `Sales / Budget Amount` remained formatted as a percentage.
 
 ### 2. Sales & Budget Amount KPI
 
-The existing KPI/card visual was updated to display:
+A KPI/card visual was created using:
 
 - `Sales`
 - `Budget Amount`
@@ -428,12 +428,12 @@ The visual title was set to:
 Sales & Budget Amount
 ```
 
-Reference labels were also added to the KPI cards:
+Reference labels were also added:
 
 - **Sales - Budgets**
 - **Sales / Budget Amount**
 
-The KPI now provides a high-level comparison between actual sales and budget performance.
+The KPI provides a high-level comparison between actual sales and budget performance.
 
 ### 3. Sales by Product Category
 
@@ -444,9 +444,7 @@ The visual uses:
 - **Legend:** `Product Category`
 - **Values:** `Sales`
 
-The legend title was turned off and the legend was positioned at the **Top Left** of the visual.
-
-This allows the dashboard to show the contribution of each product category to total sales.
+The legend title was turned off and positioned at the **Top Left**.
 
 ### 4. Sales and Budget Amount by Month
 
@@ -458,7 +456,58 @@ The visual uses:
 - **Y-axis:** `Sales`
 - **Y-axis:** `Budget Amount`
 
-The chart provides a month-by-month comparison between actual sales and budget amounts and builds on the chronological sorting of `MonthShort` established during the dashboard skeleton stage.
+The chart provides a month-by-month comparison between actual sales and budget amounts.
+
+### 5. Sales by Customer
+
+A horizontal bar chart was created to show sales by customer.
+
+The visual uses:
+
+- **X-axis:** `Sales`
+- **Y-axis:** `Full Name`
+
+Data labels were enabled to display the sales value for each customer directly on the chart.
+
+The visual is titled:
+
+```text
+Sales by Full Name
+```
+
+This provides a detailed view of customer-level sales performance and supports the business requirement to identify high-performing customers.
+
+### 6. Sales by Product
+
+A second horizontal bar chart was created to show sales by individual product.
+
+The visual uses:
+
+- **X-axis:** `Sales`
+- **Y-axis:** `Product Name`
+
+Data labels were enabled to display the sales value for each product.
+
+The visual is titled:
+
+```text
+Sales by Product Name
+```
+
+This allows individual products to be compared based on sales performance.
+
+### 7. Sales by Customer City
+
+A map visual was added to analyze sales geographically.
+
+The visual uses:
+
+- **Location:** `Customer City`
+- **Bubble Size:** `Sales`
+
+Automatic zoom was turned off to keep the map view stable while exploring customer locations.
+
+The map provides a geographical view of where sales are being generated and supports location-based customer analysis.
 
 ### Current Dashboard Preview
 
@@ -466,16 +515,14 @@ The chart provides a month-by-month comparison between actual sales and budget a
 
 ## Upcoming Dashboard Development
 
-The next stage of dashboard development will focus on adding the remaining analytical components:
+The next stage of dashboard development will focus on:
 
-1. **Bar Charts**
-2. **Map Graph**
-3. **Top 10 Graphs**
-4. **Gradient Bar Chart Color**
-5. **Customer Details**
-6. **Pivot Table**
+1. **Top 10 Graphs**
+2. **Gradient Bar Chart Color**
+3. **Customer Details**
+4. **Pivot Table**
 
-These components will progressively transform the current dashboard into the final interactive sales analytics dashboard.
+These components will further develop the dashboard into the final interactive sales analytics solution.
 
 ## Project Workflow
 
@@ -496,10 +543,12 @@ These components will progressively transform the current dashboard into the fin
 15. Create KPI visuals
 16. Organize report measures in a dedicated measure table
 17. Create category and time-based sales visualizations
-18. Develop additional charts and analytical visuals
-19. Validate the dashboard against the business requirements
-20. Extract and document key business insights
-21. Finalize and publish the Power BI report
+18. Create customer and product sales visualizations
+19. Add geographical sales analysis
+20. Develop the remaining dashboard visuals
+21. Validate the dashboard against the business requirements
+22. Extract and document key business insights
+23. Finalize and publish the Power BI report
 
 ## Analysis
 
