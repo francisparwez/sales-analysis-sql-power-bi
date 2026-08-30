@@ -475,8 +475,6 @@ The visual is titled:
 Sales by Full Name
 ```
 
-This provides a detailed view of customer-level sales performance and supports the business requirement to identify high-performing customers.
-
 ### 6. Sales by Product
 
 A second horizontal bar chart was created to show sales by individual product.
@@ -494,8 +492,6 @@ The visual is titled:
 Sales by Product Name
 ```
 
-This allows individual products to be compared based on sales performance.
-
 ### 7. Sales by Customer City
 
 A map visual was added to analyze sales geographically.
@@ -507,7 +503,67 @@ The visual uses:
 
 Automatic zoom was turned off to keep the map view stable while exploring customer locations.
 
-The map provides a geographical view of where sales are being generated and supports location-based customer analysis.
+### 8. Top 10 Customers
+
+The customer sales bar chart was filtered using the **Top N** filter.
+
+The configuration was:
+
+- **Filter type:** Top N
+- **N:** 10
+- **Based on:** `Sales`
+
+The chart title was changed to:
+
+```text
+Sales by Top 10 Customers
+```
+
+This focuses the visual on the ten customers generating the highest sales.
+
+### 9. Top 10 Product Names
+
+The product sales bar chart was also filtered using the **Top N** filter.
+
+The configuration was:
+
+- **Filter type:** Top N
+- **N:** 10
+- **Based on:** `Sales`
+
+The chart title was changed to:
+
+```text
+Sales by Top 10 Product Names
+```
+
+This focuses the visual on the ten products generating the highest sales.
+
+The Y-axis label was adjusted to provide a clearer description of the category being displayed.
+
+### 10. Gradient Bar Chart Formatting
+
+Gradient colour formatting was applied to the Top 10 customer and Top 10 product bar charts.
+
+The gradient was based on the `Sales` measure, allowing the bars to visually differentiate sales values.
+
+This adds an additional visual cue to the Top 10 analysis and makes differences in sales performance easier to identify.
+
+### 11. Customer Details Page
+
+The `Sales Overview` report page was renamed to:
+
+```text
+Sales Overview
+```
+
+The page was then duplicated to create a second report page named:
+
+```text
+Customer Details
+```
+
+The `Customer Details` page is currently a copy of the Sales Overview page and will be developed further in the next stage.
 
 ### Current Dashboard Preview
 
@@ -515,14 +571,12 @@ The map provides a geographical view of where sales are being generated and supp
 
 ## Upcoming Dashboard Development
 
-The next stage of dashboard development will focus on:
+The remaining dashboard development work will focus on:
 
-1. **Top 10 Graphs**
-2. **Gradient Bar Chart Color**
-3. **Customer Details**
-4. **Pivot Table**
+1. **Customer Details – further development**
+2. **Pivot Table**
 
-These components will further develop the dashboard into the final interactive sales analytics solution.
+The `Customer Details` page will be refined to provide a more detailed customer-level analysis, while the Pivot Table will provide a more granular tabular view of the underlying sales information.
 
 ## Project Workflow
 
@@ -545,10 +599,13 @@ These components will further develop the dashboard into the final interactive s
 17. Create category and time-based sales visualizations
 18. Create customer and product sales visualizations
 19. Add geographical sales analysis
-20. Develop the remaining dashboard visuals
-21. Validate the dashboard against the business requirements
-22. Extract and document key business insights
-23. Finalize and publish the Power BI report
+20. Create Top 10 customer and product analysis
+21. Apply gradient visual formatting
+22. Create the Customer Details report page
+23. Develop the remaining dashboard components
+24. Validate the dashboard against the business requirements
+25. Extract and document key business insights
+26. Finalize and publish the Power BI report
 
 ## Analysis
 
