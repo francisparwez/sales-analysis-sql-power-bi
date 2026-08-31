@@ -551,32 +551,51 @@ This adds an additional visual cue to the Top 10 analysis and makes differences 
 
 ### 11. Customer Details Page
 
-The `Sales Overview` report page was renamed to:
+The `Sales Overview` report page was finalized as the main dashboard page. A copy of the page was created as a dedicated customer analysis page named `Customer Details`.
 
-```text
-Sales Overview
-```
+For the Customer Details page:
 
-The page was then duplicated to create a second report page named:
+- The page title was changed to `Customer Details`.
+- The `Sales and Budget Amount by MonthShort` line chart was removed.
+- The `Sales by Customer City` map was removed.
+- A matrix visual was added at the bottom of the page.
+- `Full Name` was added to **Rows** and renamed to `Customers`.
+- `MonthShort` was added to **Columns**.
+- `Sales` was added to **Values**.
+- The matrix was sorted by the **Total** column so customers are ordered by total sales.
+- Formatting from the Top 10 customer bar chart was copied to the matrix and adapted for the table.
+- Matrix value text was reduced to **9px**.
+- Conditional formatting was applied to the matrix values to create a sales-intensity effect across the monthly values.
 
-```text
-Customer Details
-```
+The resulting page provides a customer-level view of monthly sales together with total sales, allowing users to compare customer performance across the year.
 
-The `Customer Details` page is currently a copy of the Sales Overview page and will be developed further in the next stage.
+## Final Dashboard & Data Model
 
-### Current Dashboard Preview
+The Power BI report is complete and includes two dashboard pages and the finalized data model.
 
-![Sales Analytics Dashboard Preview](IMAGES/dashboard.png)
+### Sales Overview
 
-## Upcoming Dashboard Development
+The main dashboard provides an interactive overview of sales performance using KPIs, category analysis, monthly Sales vs Budget trends, Top 10 customers, Top 10 products, customer geography, and slicers for time, location, category, subcategory, and product.
 
-The remaining dashboard development work will focus on:
+![Sales Overview Dashboard](IMAGES/sales-dashboard.png)
 
-1. **Customer Details – further development**
-2. **Pivot Table**
+### Customer Details
 
-The `Customer Details` page will be refined to provide a more detailed customer-level analysis, while the Pivot Table will provide a more granular tabular view of the underlying sales information.
+The Customer Details page provides a more granular customer-level view using a monthly sales matrix and total sales by customer.
+
+![Customer Details Dashboard](IMAGES/customers-dashboard.png)
+
+### Power BI Data Model
+
+The final Power BI model connects the calendar, product, customer, internet sales, and budget tables used by the report.
+
+![Power BI Data Model](IMAGES/data-model.png)
+
+## Project Status
+
+**Completed – v1.0**
+
+The SQL preparation, Power BI data model, dashboard design, KPI development, analytical visualizations, Top 10 analysis, customer details page, and final documentation have been completed.
 
 ## Project Workflow
 
@@ -601,11 +620,11 @@ The `Customer Details` page will be refined to provide a more detailed customer-
 19. Add geographical sales analysis
 20. Create Top 10 customer and product analysis
 21. Apply gradient visual formatting
-22. Create the Customer Details report page
-23. Develop the remaining dashboard components
+22. Create and finalize the Customer Details report page
+23. Build the customer monthly sales matrix
 24. Validate the dashboard against the business requirements
-25. Extract and document key business insights
-26. Finalize and publish the Power BI report
+25. Finalize the report documentation and project assets
+26. Complete the Power BI portfolio project
 
 ## Analysis
 
@@ -662,7 +681,9 @@ Sales-Analysis/
 │   └── SalesBudget.xlsx
 │
 ├── IMAGES/
-│   └── dashboard.png
+│   ├── sales-dashboard.png
+│   ├── customers-dashboard.png
+│   └── data-model.png
 │
 └── README.md
 ```
